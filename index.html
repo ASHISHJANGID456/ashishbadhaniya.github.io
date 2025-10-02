@@ -137,9 +137,13 @@
           if (file.type === "file" && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
             const div = document.createElement('div');
             div.className = "gallery-item";
-            div.innerHTML = `
-              <img src="${file.download_url}" alt="${file.name}">
-              <a class="download" href="${file.download_url}" download>Download</a>
+            // NEW code to use
+div.innerHTML = `
+  <div class="image-container">
+    <img src="${file.download_url}" alt="${file.name}">
+  </div>
+  <a class="download" href="${file.download_url}" download>Download</a>
+
             `;
             gallery.appendChild(div);
           }
