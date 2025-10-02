@@ -5,14 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Jewellery Gallery</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background:#f7f7f7; }
-    h1 { text-align: center; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top:20px; }
-    .gallery-item { background:#fff; padding:10px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center; }
-    .gallery-item img { max-width: 100%; border-radius:8px; }
-    .download { display:inline-block; margin-top:8px; padding:6px 10px; background:#0073e6; color:#fff; border-radius:5px; text-decoration:none; font-size:14px; }
-    .download:hover { background:#005bb5; }
-  </style>
+  /* Define colors for easy use (CSS Variables) */
+  :root {
+    --rose-gold-light: #FCE4EC; /* Very light pink/peach for background */
+    --rose-gold-accent: #C5969E; /* Deeper rose gold tone for accents */
+    --text-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.15); /* Slightly darker shadow */
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Body background is Light Rose Gold */
+    background: var(--rose-gold-light);
+    color: var(--text-color);
+  }
+
+  h1 {
+    text-align: center;
+    padding: 20px 0 10px;
+    margin-bottom: 0;
+    color: var(--rose-gold-accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* Styling the availability message */
+  .status-message {
+    text-align: center;
+    font-weight: 600;
+    color: #1a7f37; /* Darker green */
+    font-size: 1.1em;
+    padding-bottom: 20px;
+    margin-top: 0;
+  }
+
+  .gallery {
+    display: grid;
+    /* Responsive layout: adjust columns based on screen size */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto; /* Center the gallery */
+  }
+
+  /* Style for each item card */
+  .gallery-item {
+    background: #fff; /* Card background is white */
+    padding: 15px;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 20px var(--shadow-color); /* Deep box-shadow */
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  /* Hover effect: Card slightly lifts up */
+  .gallery-item:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px var(--shadow-color);
+  }
+
+  /* Container for the image to give it a fixed height and crop */
+  .image-container {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .gallery-item img {
+    /* Image takes full width and height of its container */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers area without distortion */
+    transition: transform 0.5s ease;
+  }
+
+  /* Image zoom effect on hover */
+  .gallery-item:hover img {
+    transform: scale(1.1); /* Zooms the image in slightly */
+  }
+
+  /* New look for the 'Download' button */
+  .download {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 30px;
+    background: var(--rose-gold-accent);
+    color: #fff;
+    border-radius: 50px; /* Pill-shaped button */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background 0.3s ease;
+  }
+
+  .download:hover {
+    background: #A87680; /* Slightly darker shade on hover */
+  }
+</style>
+
 </head>
 <body>
   <h1>Jewellery designs</h1>
