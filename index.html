@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Jewellery Gallery</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background:#f7f7f7; }
+    h1 { text-align: center; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top:20px; }
+    .gallery-item { background:#fff; padding:10px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center; }
+    .gallery-item img { max-width: 100%; border-radius:8px; }
+    .download { display:inline-block; margin-top:8px; padding:6px 10px; background:#0073e6; color:#fff; border-radius:5px; text-decoration:none; font-size:14px; }
+    .download:hover { background:#005bb5; }
+  </style>
+</head>
+<body>
+  <h1>My Jewellery Designs</h1>
+  <div id="gallery" class="gallery">Loading photos…</div>
+
+  <script>
+    const owner = "YOUR_USERNAME";  // 👈 yahan apna GitHub username daalo
+    const repo = "YOUR_REPO";       // 👈 yahan apna repo naam daalo (eg: ashishbadhaniya.github.io)
+    const folder = "photos";        // 👈 folder jisme tum photos upload karoge
+
+    const apiURL = https://api.github.com/repos/${owner}/${repo}/contents/${folder};
+
+    fetch(apiURL)
+      .then(r => r.json())
+      .then(data => {
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = "";
+        data.forEach(file => {
+          if (file.type === "file" && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
+            const div = document.createElement('div');
+            div.className = "gallery-item";
+            div.innerHTML = `
+              <img src="${file.download_url}" alt="${file.name}">
+              <a class="download" href="${file.download_url}" download>Download</a>
+            `;
+            gallery.appendChild(div);
+          }
+        });
+      })
+      .catch(err => {
+        document.getElementById('gallery').innerHTML = "❌ Error: Make sure you have a folder named 'photos' and images inside it.";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
