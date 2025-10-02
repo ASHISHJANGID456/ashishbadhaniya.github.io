@@ -2,122 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Jewellery Gallery</title>
+  <title>Ashish Jangid Jewellery Gallery</title>
+  
   <style>
-  /* Define colors for easy use (CSS Variables) */
-  :root {
-    --rose-gold-light: #FCE4EC; /* Very light pink/peach for background */
-    --rose-gold-accent: #C5969E; /* Deeper rose gold tone for accents */
-    --text-color: #333;
-    --shadow-color: rgba(0, 0, 0, 0.15); /* Slightly darker shadow */
-  }
+    /* Define colors for easy use (CSS Variables) */
+    :root {
+      --rose-gold-light: #FCE4EC; /* Very light pink/peach for background */
+      --rose-gold-accent: #C5969E; /* Deeper rose gold tone for accents */
+      --text-color: #333;
+      --shadow-color: rgba(0, 0, 0, 0.15); /* Slightly darker shadow */
+    }
 
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    /* Body background is Light Rose Gold */
-    background: var(--rose-gold-light);
-    color: var(--text-color);
-  }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      /* Body background is Light Rose Gold */
+      background: var(--rose-gold-light);
+      color: var(--text-color);
+    }
 
-  h1 {
-    text-align: center;
-    padding: 20px 0 10px;
-    margin-bottom: 0;
-    color: var(--rose-gold-accent);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
+    /* 2. LOGO & HEADING CONTAINER STYLE (NEW) */
+    .header-container {
+      text-align: center;
+      padding-top: 30px;
+      padding-bottom: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* 3. LOGO IMAGE STYLE (NEW) */
+    .logo {
+      width: 80px; /* Logo size (can be adjusted) */
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border-radius: 50%; /* Makes the logo circular */
+      border: 3px solid var(--rose-gold-accent); /* Rose Gold border */
+    }
 
-  /* Styling the availability message */
-  .status-message {
-    text-align: center;
-    font-weight: 600;
-    color: #1a7f37; /* Darker green */
-    font-size: 1.1em;
-    padding-bottom: 20px;
-    margin-top: 0;
-  }
+    h1 {
+      text-align: center;
+      padding: 10px 0 10px; /* Adjusted padding */
+      margin-bottom: 0;
+      color: var(--rose-gold-accent);
+      letter-spacing: 3px; /* Increased spacing for style */
+      text-transform: uppercase;
+      font-weight: 700;
+      /* 4. Applied the new font family */
+      font-family: 'Playfair Display', serif; 
+    }
 
-  .gallery {
-    display: grid;
-    /* Responsive layout: adjust columns based on screen size */
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto; /* Center the gallery */
-  }
+    /* Styling the availability message */
+    .status-message {
+      text-align: center;
+      font-weight: 600;
+      color: #1a7f37; /* Darker green */
+      font-size: 1.1em;
+      padding-bottom: 20px;
+      margin-top: 0;
+    }
 
-  /* Style for each item card */
-  .gallery-item {
-    background: #fff; /* Card background is white */
-    padding: 15px;
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 8px 20px var(--shadow-color); /* Deep box-shadow */
-    text-align: center;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    overflow: hidden;
-  }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-  /* Hover effect: Card slightly lifts up */
-  .gallery-item:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 15px 30px var(--shadow-color);
-  }
+    /* Style for each item card */
+    .gallery-item {
+      background: #fff;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px var(--shadow-color);
+      text-align: center;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      overflow: hidden;
+    }
 
-  /* Container for the image to give it a fixed height and crop */
-  .image-container {
-    width: 100%;
-    height: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 10px;
-    margin-bottom: 10px;
-  }
+    /* Hover effect: Card slightly lifts up */
+    .gallery-item:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 15px 30px var(--shadow-color);
+    }
 
-  .gallery-item img {
-    /* Image takes full width and height of its container */
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures image covers area without distortion */
-    transition: transform 0.5s ease;
-  }
+    /* Container for the image to give it a fixed height and crop */
+    .image-container {
+      width: 100%;
+      height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
 
-  /* Image zoom effect on hover */
-  .gallery-item:hover img {
-    transform: scale(1.1); /* Zooms the image in slightly */
-  }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
 
-  /* New look for the 'Download' button */
-  .download {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 30px;
-    background: var(--rose-gold-accent);
-    color: #fff;
-    border-radius: 50px; /* Pill-shaped button */
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    transition: background 0.3s ease;
-  }
+    /* Image zoom effect on hover */
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
 
-  .download:hover {
-    background: #A87680; /* Slightly darker shade on hover */
-  }
-</style>
+    /* New look for the 'Download' button */
+    .download {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 30px;
+      background: var(--rose-gold-accent);
+      color: #fff;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: background 0.3s ease;
+    }
+
+    .download:hover {
+      background: #A87680;
+    }
+    
+    /* Removed the previous redundant/incorrect style block at the end */
+  </style>
 
 </head>
 <body>
-  <h1>Jewellery designs</h1>
-  <p style="text-align:center; font-weight:bold; color:green; font-size:18px;">✅ All designs shown below are currently available</p>
+  
+  <div class="header-container">
+    <img src="path/to/your/logo.png" alt="Ashish Jangid Jewellery" class="logo">
+    <h1>Jewellery designs</h1>
+  </div>
+  
+  <p class="status-message">✅ All designs shown below are currently available</p>
 
   <div id="gallery" class="gallery">Loading photos…</div>
 
@@ -137,26 +165,22 @@
           if (file.type === "file" && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
             const div = document.createElement('div');
             div.className = "gallery-item";
-            // NEW code to use
-div.innerHTML = `
-  <div class="image-container">
-    <img src="${file.download_url}" alt="${file.name}">
-  </div>
-  <a class="download" href="${file.download_url}" download>Download</a>
-
+            
+            // This is the correct, fixed code with image-container
+            div.innerHTML = `
+              <div class="image-container">
+                <img src="${file.download_url}" alt="${file.name}">
+              </div>
+              <a class="download" href="${file.download_url}" download>Download</a>
             `;
+            
             gallery.appendChild(div);
           }
         });
       })
       .catch(err => {
-        document.getElementById('gallery').innerHTML = "❌ Error: Make sure you have a folder named 'photos' and images inside it.";
+        document.getElementById('gallery').innerHTML = "❌ Error: Make sure your GitHub path, folder name, and images are correct.";
         console.error(err);
-      });
-  </script>
-</body>
-</html>
-
       });
   </script>
 </body>
