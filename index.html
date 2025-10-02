@@ -19,11 +19,11 @@
   <div id="gallery" class="gallery">Loading photos…</div>
 
   <script>
-    const owner = "ASHISHJANGID456";  // 👈 yahan apna GitHub username daalo
-    const repo = "ashishbadhaniya.github.io";       // 👈 yahan apna repo naam daalo (eg: ashishbadhaniya.github.io)
-    const folder = "DESIGN";        // 👈 folder jisme tum photos upload karoge
+    const owner = "ASHISHJANGID456";
+    const repo = "ashishbadhaniya.github.io";
+    const folder = "photos";
 
-    const apiURL = https://api.github.com/repos/${owner}/${repo}/contents/${folder};
+    const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents/${folder}`;
 
     fetch(apiURL)
       .then(r => r.json())
@@ -45,6 +45,11 @@
       .catch(err => {
         document.getElementById('gallery').innerHTML = "❌ Error: Make sure you have a folder named 'photos' and images inside it.";
         console.error(err);
+      });
+  </script>
+</body>
+</html>
+
       });
   </script>
 </body>
