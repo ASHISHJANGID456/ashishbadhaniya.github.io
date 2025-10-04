@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Great+Vibes&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>badhaniya Jewels</title>
+  <title>Badhaniya Jewels - Gallery</title>
 
   <style>
     :root {
@@ -12,6 +12,7 @@
       --rose-gold-accent: #C5969E;
       --text-color: #333;
       --shadow-color: rgba(0, 0, 0, 0.15);
+      --active-tab-color: #A87680; /* Darker rose gold for active state */
     }
 
     body {
@@ -51,7 +52,7 @@
     h1 {
       text-align: center;
       padding: 10px 0;
-      margin-bottom: 0;
+      margin-bottom: 20px;
       color: var(--rose-gold-accent);
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -59,6 +60,41 @@
       font-family: 'Playfair Display', serif;
     }
 
+    /* CATEGORY TABS STYLE */
+    .category-nav {
+      max-width: 1200px;
+      margin: 0 auto 30px;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .category-button {
+      background: #fff;
+      color: var(--rose-gold-accent);
+      border: 2px solid var(--rose-gold-accent);
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s, color 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .category-button:hover {
+      background: var(--rose-gold-accent);
+      color: #fff;
+    }
+
+    .category-button.active {
+      background: var(--active-tab-color);
+      color: #fff;
+      border-color: var(--active-tab-color);
+      box-shadow: 0 4px 10px var(--shadow-color);
+    }
+
+    /* GALLERY STYLE */
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -66,6 +102,7 @@
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
+      min-height: 40vh; /* Added for better layout when loading */
     }
 
     .gallery-item {
@@ -76,6 +113,12 @@
       text-align: center;
       transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
       overflow: hidden;
+      /* Category filtering */
+      display: none; /* Hide all by default */
+    }
+    
+    .gallery-item.show {
+        display: block; /* Show item if it matches the current filter */
     }
 
     .gallery-item:hover {
@@ -91,7 +134,7 @@
       align-items: center;
       overflow: hidden;
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 0;
     }
 
     .gallery-item img {
@@ -104,70 +147,124 @@
     .gallery-item:hover img {
       transform: scale(1.1);
     }
-
-    .download {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 30px;
-      background: var(--rose-gold-accent);
-      color: #fff;
-      border-radius: 50px;
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      transition: background 0.3s ease;
-    }
-
-    .download:hover {
-      background: #A87680;
-    }
   </style>
 </head>
 <body>
 
-  <!-- Header with logo and brand name -->
   <div class="header-container">
     <img src="path/to/your/logo.png" alt="Badhaniya Jewellery Logo" class="logo">
     <div class="brand-name">badhaniya Jewellery</div>
   </div>
 
-  <!-- Page Title -->
   <h1>badhaniya Designs</h1>
+  
+  <div class="category-nav">
+    <button class="category-button active" data-category="all">All Designs</button>
+    <button class="category-button" data-category="ring">Rings</button>
+    <button class="category-button" data-category="earring">Earrings</button>
+    <button class="category-button" data-category="necklace_pendant">Necklaces / Pendants</button>
+    <button class="category-button" data-category="other">Other Designs</button> 
+  </div>
 
-  <!-- Gallery Section -->
   <div id="gallery" class="gallery">Loading photos…</div>
 
   <script>
+    // ----------------------------------------------------------------
+    // IMPORTANT: GitHub Configuration - If these are correct, do not change them!
     const owner = "ASHISHJANGID456";
     const repo = "ashishbadhaniya.github.io";
     const folder = "ArtGellery";
-
     const apiURL = `https://api.github.com/repos/${owner}/${repo}/contents/${folder}`;
+    // ----------------------------------------------------------------
 
-    fetch(apiURL)
-      .then(r => r.json())
-      .then(data => {
-        const gallery = document.getElementById('gallery');
-        gallery.innerHTML = "";
-        data.forEach(file => {
-          if (file.type === "file" && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)) {
+    const galleryElement = document.getElementById('gallery');
+    const categoryButtons = document.querySelectorAll('.category-button');
+    let allJewels = []; // To store all loaded jewel data
+
+    // Function to determine category based on file name
+    function getCategory(fileName) {
+        const lowerName = fileName.toLowerCase();
+        // Check for 'ring' in file name
+        if (lowerName.includes('ring')) {
+            return 'ring';
+        } 
+        // Check for 'earring' in file name
+        else if (lowerName.includes('earring') || lowerName.includes('ear_ring')) {
+            return 'earring';
+        } 
+        // Check for 'necklace' or 'pendant' in file name
+        else if (lowerName.includes('necklace') || lowerName.includes('pendant')) {
+            return 'necklace_pendant';
+        }
+        // Default category for items that don't match
+        return 'other'; 
+    }
+
+    // Function to render the gallery items for a specific category
+    function filterGallery(category) {
+        galleryElement.innerHTML = ''; // Clear previous items
+        
+        // Filter the items based on the category
+        const filteredJewels = allJewels.filter(jewel => 
+            category === 'all' || jewel.category === category
+        );
+        
+        if (filteredJewels.length === 0) {
+             galleryElement.innerHTML = `<p style="text-align: center; width: 100%; color: var(--rose-gold-accent); font-size: 1.1em; padding: 50px;">No designs found in this category.</p>`;
+             return;
+        }
+
+        // Render the filtered items
+        filteredJewels.forEach(file => {
             const div = document.createElement('div');
-            div.className = "gallery-item";
+            div.className = `gallery-item show`; 
 
+            // NOTE: Download button has been REMOVED here as per your request.
             div.innerHTML = `
-              <div class="image-container">
-                <img src="${file.download_url}" alt="${file.name}">
-              </div>
-              <a class="download" href="${file.download_url}" download>Download</a>
+                <div class="image-container">
+                    <img src="${file.download_url}" alt="${file.name}">
+                </div>
             `;
-
-            gallery.appendChild(div);
-          }
+            
+            galleryElement.appendChild(div);
         });
+    }
+
+    // Event listener for category buttons
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+            
+            const category = button.getAttribute('data-category');
+            filterGallery(category);
+        });
+    });
+
+    // Initial data fetch from GitHub
+    fetch(apiURL)
+      .then(r => {
+          if (!r.ok) {
+              throw new Error(`HTTP error! status: ${r.status}`);
+          }
+          return r.json();
+      })
+      .then(data => {
+        // Filter and process the data
+        allJewels = data
+            .filter(file => file.type === "file" && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name))
+            .map(file => ({
+                ...file,
+                category: getCategory(file.name) // Add category information
+            }));
+
+        // Display the 'All Designs' category by default
+        filterGallery('all'); 
       })
       .catch(err => {
-        document.getElementById('gallery').innerHTML = "❌ Error: Make sure your GitHub path, folder name, and images are correct.";
+        galleryElement.innerHTML = `<p style="text-align: center; width: 100%; color: red; padding: 50px;">❌ Error loading designs. Please check your GitHub path and folder name. (${err.message})</p>`;
         console.error(err);
       });
   </script>
